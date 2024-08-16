@@ -8,10 +8,16 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
   }); //sincrono cria uma instancia de um Client
+
   await client.connect(); //assincrono, estamos requisitando uma conexão ao banco de dados
-  const result = await client.query(queryObject); //assincrono realiza a query enviada para a função
-  await client.end(); //finaliza a sessão do banco de dados
-  return result;
+  try {
+    const result = await client.query(queryObject); //assincrono realiza a query enviada para a função
+    return result;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    await client.end(); //finaliza a sessão do banco de dados
+  }
 }
 
 export default {
