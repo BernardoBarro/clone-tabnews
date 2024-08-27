@@ -7,6 +7,7 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
+    ssl: process.env.NODE_ENV === "development" ? false : true,
   }); //sincrono cria uma instancia de um Client
   console.log("Dados do banco: ", {
     host: process.env.POSTGRES_HOST,
