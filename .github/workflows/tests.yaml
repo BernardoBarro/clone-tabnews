@@ -1,0 +1,18 @@
+name: Automated Tests #nome do workflow
+
+on: pull_request #é o evento, nesse caso quando acontecer um pull_request vai rodar esse workflow
+
+jobs:
+  jest:
+    name: Jest Ubuntu #nome do job
+    runs-on: ubuntu-latest #define o os que o job vai rodar
+    steps:
+      - uses: actions/checkout@v4 #são actions que o github e outros usuários fazem para facilitar nossa vida, esse se conecta na nossa conta e no repositório
+
+      - uses: actions/setup-node@v4 #esse ajuda a configurar o node
+        with:
+          node-version: "lts/hydrogen" #versão do node
+
+      - run: npm ci #é tipo o npm install mas ele instala conforme o que ta no package-lock-json ao invés de pegar da internet, isso permite que a versão seja sempre a mesma
+
+      - run: npm test
