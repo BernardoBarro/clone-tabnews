@@ -30,3 +30,19 @@ jobs:
       - run: npm ci #é tipo o npm install mas ele instala conforme o que ta no package-lock-json ao invés de pegar da internet, isso permite que a versão seja sempre a mesma
 
       - run: npm run lint:eslint:check
+
+  commitlint:
+    name: commitlint #nome do job
+    runs-on: ubuntu-latest #define o os que o job vai rodar
+    steps:
+      - uses: actions/checkout@v4 #são actions que o github e outros usuários fazem para facilitar nossa vida, esse se conecta na nossa conta e no repositório
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4 #esse ajuda a configurar o node
+        with:
+          node-version: "lts/hydrogen" #versão do node
+
+      - run: npm ci #é tipo o npm install mas ele instala conforme o que ta no package-lock-json ao invés de pegar da internet, isso permite que a versão seja sempre a mesma
+
+      - run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose # essa linha basicamente pega todos os commits do pr para verificar
